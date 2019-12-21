@@ -40,8 +40,8 @@
     "@spinajs/configuration": "^1.0.0",
     "@spinajs/di": "^1.0.7",
     "@spinajs/log": "^1.0.2",
-    "@spinajs/orm": "^1.0.7",
-    "@spinajs/orm-sql": "^1.0.1",
+    "@spinajs/orm": "^1.0.10",
+    "@spinajs/orm-sql": "^1.0.3",
     "lodash": "^4.17.15",
     "sqlite3": "^4.1.1"
   },
@@ -58,6 +58,7 @@
     "prettier": "^1.18.2",
     "ts-mocha": "^6.0.0",
     "ts-node": "^8.3.0",
+    "tslint": "^5.20.1",
     "tslint-circular-dependencies": "^0.1.0",
     "tslint-config-prettier": "^1.18.0",
     "tslint-config-standard": "^8.0.1",
