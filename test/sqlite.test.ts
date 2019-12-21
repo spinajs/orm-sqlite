@@ -3,7 +3,7 @@ import { join, normalize, resolve } from 'path';
 import { SqliteOrmDriver } from "./../src/index";
 import { DI } from "@spinajs/di";
 import { SpinaJsDefaultLog, LogModule } from "@spinajs/log";
-import { Orm, MODEL_DESCTRIPTION_SYMBOL } from "@spinajs/orm";
+import { Orm } from "@spinajs/orm";
 import * as _ from "lodash";
 import * as chai from 'chai';
 import * as chaiAsPromised from 'chai-as-promised';
