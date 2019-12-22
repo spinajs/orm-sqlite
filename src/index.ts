@@ -2,7 +2,7 @@ export * from "./compilers";
 export * from "./converters";
 export * from "./decorators";
 
-import { IColumnDescriptor, QueryContext, ColumnQueryCompiler, TableQueryCompiler } from "@spinajs/orm";
+import { IColumnDescriptor, QueryContext, ColumnQueryCompiler, TableQueryCompiler, OrmDriver } from "@spinajs/orm";
 import { Database } from "sqlite3";
 import { SqlDriver } from "@spinajs/orm-sql";
 import { Injectable, Container } from "@spinajs/di";
@@ -66,7 +66,7 @@ export class SqliteOrmDriver extends SqlDriver {
         return this.Db !== null && this.Db !== undefined;
     }
 
-    public connect(): Promise<void> {
+    public async connect(): Promise<OrmDriver> {
 
         return new Promise((resolve, reject) => {
             this.Db = new Database(this.Options.Filename, (err) => {
@@ -75,12 +75,12 @@ export class SqliteOrmDriver extends SqlDriver {
                     return;
                 }
 
-                resolve();
+                resolve(this);
             });
         });
     }
 
-    public async disconnect(): Promise<void> {
+    public async disconnect(): Promise<OrmDriver> {
         return new Promise((res, rej) => {
             this.Db.close((err) => {
                 if (err) {
@@ -89,7 +89,7 @@ export class SqliteOrmDriver extends SqlDriver {
                 }
 
                 this.Db = null;
-                res();
+                res(this);
             });
         })
     }
