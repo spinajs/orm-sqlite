@@ -1,3 +1,7 @@
+export * from "./compilers";
+export * from "./converters";
+export * from "./decorators";
+
 import { IColumnDescriptor, QueryContext, ColumnQueryCompiler, TableQueryCompiler } from "@spinajs/orm";
 import { Database } from "sqlite3";
 import { SqlDriver } from "@spinajs/orm-sql";
