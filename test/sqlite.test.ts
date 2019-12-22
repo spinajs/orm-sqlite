@@ -1,7 +1,7 @@
 import { Configuration } from "@spinajs/configuration";
 import { join, normalize, resolve } from 'path';
 import { SqliteOrmDriver } from "./../src/index";
-import { DI } from "@spinajs/di";
+import { DI, IContainer } from "@spinajs/di";
 import { SpinaJsDefaultLog, LogModule } from "@spinajs/log";
 import { Orm } from "@spinajs/orm";
 import * as _ from "lodash";
@@ -37,6 +37,11 @@ export class ConnectionConf extends Configuration {
         }
     }
 
+    // tslint:disable-next-line: no-empty
+    public resolve(_container: IContainer) {
+
+    }
+
     public get(path: string[], defaultValue?: any): any {
         return _.get(this.conf, path, defaultValue);
     }
@@ -67,7 +72,7 @@ describe("Sqlite driver migration, updates, deletions & inserts", () => {
 
         await db().Connections.get("sqlite").select().from("user");
         await expect(db().Connections.get("sqlite").select().from("notexistsd")).to.be.rejected;
-     
+
 
     })
 
@@ -152,10 +157,10 @@ describe("Sqlite driver migrate", () => {
         expect((result as any).Name).to.eq("test");
     })
 
-    
+
 });
 
-describe("Sqlite queries", ()=>{
+describe("Sqlite queries", () => {
 
     beforeEach(async () => {
         DI.register(ConnectionConf).as(Configuration);
