@@ -16,7 +16,7 @@ export class SqliteOrmDriver extends SqlDriver {
     public execute(stmt: string, params: any[], queryContext: QueryContext): Promise<any> {
 
         if (!this.Db) {
-            throw new Error("cannot execute sqlite statement, not db connection avaible");
+            throw new Error("cannot execute sqlite statement, no db connection avaible");
         }
 
         const queryParams = params ?? [];
@@ -103,10 +103,21 @@ export class SqliteOrmDriver extends SqlDriver {
     }
 
 
-
+    /**
+     * 
+     * Retrieves information about specific DB table if exists. If table not exists returns null
+     * 
+     * @param name table name to retrieve info
+     * @param _schema - optional schema name
+     * @returns {[] | null}
+     */
     public async tableInfo(name: string, _schema?: string): Promise<IColumnDescriptor[]> {
 
         const result = await this.execute(`PRAGMA table_info(${name});`, null, QueryContext.Select) as [];
+
+        if (!Array.isArray(result) || result.length === 0) {
+            return null;
+        }
 
         return result.map((r: any) => {
             return {
@@ -121,7 +132,7 @@ export class SqliteOrmDriver extends SqlDriver {
                 AutoIncrement: false,
                 Name: r.name,
                 Converter: null,
-                Schema: _schema
+                Schema: _schema ? _schema : this.Options.Database
             }
         });
     }

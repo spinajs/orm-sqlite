@@ -1,3 +1,4 @@
+import { TestMigration } from './migrations/TestMigration';
 import { Configuration } from "@spinajs/configuration";
 import { join, normalize, resolve } from 'path';
 import { SqliteOrmDriver } from "./../src/index";
@@ -6,8 +7,9 @@ import { SpinaJsDefaultLog, LogModule } from "@spinajs/log";
 import { Orm } from "@spinajs/orm";
 import * as _ from "lodash";
 import * as chai from 'chai';
-import * as chaiAsPromised from 'chai-as-promised';
+import chaiAsPromised from 'chai-as-promised';
 import { User } from "./models/User";
+import sinon from 'sinon';
 
 const expect = chai.expect;
 chai.use(chaiAsPromised);
@@ -16,6 +18,7 @@ export function dir(path: string) {
     return resolve(normalize(join(__dirname, path)));
 }
 
+const TEST_MIGRATION_TABLE_NAME  = "orm_migrations";
 
 export class ConnectionConf extends Configuration {
 
@@ -31,7 +34,8 @@ export class ConnectionConf extends Configuration {
                 {
                     Driver: "orm-driver-sqlite",
                     Filename: ":memory:",
-                    Name: "sqlite"
+                    Name: "sqlite",
+                    MigrationTable: TEST_MIGRATION_TABLE_NAME
                 }
             ]
         }
@@ -71,7 +75,7 @@ describe("Sqlite driver migration, updates, deletions & inserts", () => {
         await db().migrateUp();
 
         await db().Connections.get("sqlite").select().from("user");
-        await expect(db().Connections.get("sqlite").select().from("notexistsd")).to.be.rejected;
+        await expect(db().Connections.get("sqlite").select().from("notexisted")).to.be.rejected;
 
 
     })
@@ -143,6 +147,25 @@ describe("Sqlite driver migrate", () => {
         DI.clear();
     });
 
+    it("Should migrate create migrate table", async () => {
+
+        await db().migrateUp();
+        const mTable = await db().Connections.get("sqlite").tableInfo(TEST_MIGRATION_TABLE_NAME);
+        const mResult = await db().Connections.get("sqlite").select().from(TEST_MIGRATION_TABLE_NAME).first();
+        expect(mTable).to.be.not.null;
+        expect(mResult).to.be.not.null;
+        expect((mResult as any).Migration).to.eq("TestMigration");
+    });
+
+    it("Should not migrate twice", async () =>{
+        const spy = sinon.spy(TestMigration.prototype, "up");
+        
+        await db().migrateUp();
+        await db().migrateUp();
+
+        expect(spy.calledOnce).to.be.true;
+    });
+
     it("Should migrate", async () => {
 
         await db().migrateUp();
@@ -150,14 +173,17 @@ describe("Sqlite driver migrate", () => {
             Name: "test",
             Password: "test_password",
             CreatedAt: "2019-10-18"
-        })
+        });
         const result = await db().Connections.get("sqlite").select().from("user").first();
 
         expect(result).to.be.not.null;
-        expect((result as any).Name).to.eq("test");
+        expect(result).to.eql({
+            Id: 1,
+            Name: "test",
+            Password: "test_password",
+            CreatedAt: "2019-10-18"
+        });
     })
-
-
 });
 
 describe("Sqlite queries", () => {
