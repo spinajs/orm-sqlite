@@ -2,7 +2,7 @@ export * from "./compilers";
 export * from "./converters";
 export * from "./decorators";
 
-import { IColumnDescriptor, QueryContext, ColumnQueryCompiler, TableQueryCompiler, OrmDriver } from "@spinajs/orm";
+import { IColumnDescriptor, QueryContext, ColumnQueryCompiler, TableQueryCompiler, OrmDriver, QueryBuilder } from "@spinajs/orm";
 import { Database } from "sqlite3";
 import { SqlDriver } from "@spinajs/orm-sql";
 import { Injectable, Container } from "@spinajs/di";
@@ -27,6 +27,7 @@ export class SqliteOrmDriver extends SqlDriver {
                 case QueryContext.Update:
                 case QueryContext.Delete:
                 case QueryContext.Schema:
+                case QueryContext.Transaction:
                     this.Db.run(stmt, ...queryParams, (err: any, data: any) => {
                         if (err) {
                             rej(err);
@@ -100,6 +101,25 @@ export class SqliteOrmDriver extends SqlDriver {
         this.Container = this.Container.child();
         this.Container.register(SqliteColumnCompiler).as(ColumnQueryCompiler);
         this.Container.register(SqliteTableQueryCompiler).as(TableQueryCompiler);
+    }
+
+    public async transaction(queries: QueryBuilder[]) {
+
+
+        await this.execute("BEGIN TRANSACTION", null, QueryContext.Transaction);
+
+        try {
+
+            for (const q of queries) {
+                await q;
+            }
+
+            await this.execute("COMMIT", null, QueryContext.Transaction);
+
+        } catch (ex) {
+            await this.execute("ROLLBACK",null, QueryContext.Transaction);
+            throw ex;
+        }
     }
 
 
