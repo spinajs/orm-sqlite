@@ -96,7 +96,6 @@ describe("Sqlite driver migrate with transaction", () => {
             constructor() {
                 super();
 
-                this.Migrations.length = 10;
                 this.Models.length = 0;
                 this.registerMigration(MigrationFailed);
             }
