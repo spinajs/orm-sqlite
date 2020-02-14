@@ -18,7 +18,7 @@ export function dir(path: string) {
     return resolve(normalize(join(__dirname, path)));
 }
 
-const TEST_MIGRATION_TABLE_NAME  = "orm_migrations";
+export const TEST_MIGRATION_TABLE_NAME = "orm_migrations";
 
 export class ConnectionConf extends Configuration {
 
@@ -35,7 +35,9 @@ export class ConnectionConf extends Configuration {
                     Driver: "orm-driver-sqlite",
                     Filename: ":memory:",
                     Name: "sqlite",
-                    MigrationTable: TEST_MIGRATION_TABLE_NAME
+                    Migration: {
+                        Table: TEST_MIGRATION_TABLE_NAME
+                    }
                 }
             ]
         }
@@ -51,7 +53,9 @@ export class ConnectionConf extends Configuration {
     }
 }
 
-function db() {
+
+
+export function db() {
     return DI.get(Orm);
 }
 
@@ -135,16 +139,14 @@ describe("Sqlite driver migration, updates, deletions & inserts", () => {
 describe("Sqlite driver migrate", () => {
 
     beforeEach(async () => {
+        DI.clear();
+
         DI.register(ConnectionConf).as(Configuration);
         DI.register(SqliteOrmDriver).as("orm-driver-sqlite");
         DI.register(SpinaJsDefaultLog).as(LogModule);
 
         DI.resolve(LogModule);
         await DI.resolve(Orm);
-    });
-
-    afterEach(async () => {
-        DI.clear();
     });
 
     it("Should migrate create migrate table", async () => {
@@ -157,9 +159,9 @@ describe("Sqlite driver migrate", () => {
         expect((mResult as any).Migration).to.eq("TestMigration");
     });
 
-    it("Should not migrate twice", async () =>{
+    it("Should not migrate twice", async () => {
         const spy = sinon.spy(TestMigration.prototype, "up");
-        
+
         await db().migrateUp();
         await db().migrateUp();
 

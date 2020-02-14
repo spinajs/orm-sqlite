@@ -2,7 +2,7 @@ export * from "./compilers";
 export * from "./converters";
 export * from "./decorators";
 
-import { IColumnDescriptor, QueryContext, ColumnQueryCompiler, TableQueryCompiler, OrmDriver, QueryBuilder } from "@spinajs/orm";
+import { IColumnDescriptor, QueryContext, ColumnQueryCompiler, TableQueryCompiler, OrmDriver, QueryBuilder, TransactionCallback } from "@spinajs/orm";
 import { Database } from "sqlite3";
 import { SqlDriver } from "@spinajs/orm-sql";
 import { Injectable, Container } from "@spinajs/di";
@@ -103,21 +103,28 @@ export class SqliteOrmDriver extends SqlDriver {
         this.Container.register(SqliteTableQueryCompiler).as(TableQueryCompiler);
     }
 
-    public async transaction(queries: QueryBuilder[]) {
+    public async transaction(qrOrCallback: QueryBuilder[] | TransactionCallback) {
 
+        if (!qrOrCallback) {
+            return;
+        }
 
         await this.execute("BEGIN TRANSACTION", null, QueryContext.Transaction);
 
         try {
 
-            for (const q of queries) {
-                await q;
+            if (Array.isArray(qrOrCallback)) {
+                for (const q of qrOrCallback) {
+                    await q;
+                }
+            } else {
+                await qrOrCallback(this);
             }
 
             await this.execute("COMMIT", null, QueryContext.Transaction);
 
         } catch (ex) {
-            await this.execute("ROLLBACK",null, QueryContext.Transaction);
+            await this.execute("ROLLBACK", null, QueryContext.Transaction);
             throw ex;
         }
     }
