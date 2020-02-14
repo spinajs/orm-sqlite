@@ -15,11 +15,13 @@ export class SqliteOrmDriver extends SqlDriver {
 
     public execute(stmt: string, params: any[], queryContext: QueryContext): Promise<any> {
 
+        const queryParams = params ?? [];
+
         if (!this.Db) {
             throw new Error("cannot execute sqlite statement, no db connection avaible");
         }
 
-        const queryParams = params ?? [];
+        super.execute(stmt, queryParams, queryContext);
 
         return new Promise((res, rej) => {
 
