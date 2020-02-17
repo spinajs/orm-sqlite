@@ -23,7 +23,7 @@ export class SqliteOrderByCompiler extends OrderByQueryCompiler {
         const bindings = [];
 
         if (sort) {
-            stmt = ` ORDER BY ? ${sort.order.toLowerCase() === "asc" ? "ASC" : "DESC"}`;
+            stmt = ` ORDER BY ${sort.column} ${sort.order.toLowerCase() === "asc" ? "ASC" : "DESC"}`;
             bindings.push(sort.column);
         }
 
