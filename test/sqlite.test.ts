@@ -223,7 +223,7 @@ describe("Sqlite queries", () => {
             this.where({ Name: "a" });
         }).orderBy("Name");
 
-        expect(userQuery).to.be.fulfilled;
+        return expect(userQuery).to.be.fulfilled;
     })
 
     it("should select to model", async () => {

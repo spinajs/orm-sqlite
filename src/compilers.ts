@@ -20,11 +20,10 @@ export class SqliteOrderByCompiler extends OrderByQueryCompiler {
     public compile(): ICompilerOutput {
         const sort = this._builder.getSort();
         let stmt = '';
-        const bindings = [];
+        const bindings = [] as any;
 
         if (sort) {
             stmt = ` ORDER BY ${sort.column} ${sort.order.toLowerCase() === "asc" ? "ASC" : "DESC"}`;
-            bindings.push(sort.column);
         }
 
         return {
