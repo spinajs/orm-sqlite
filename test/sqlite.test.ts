@@ -4,7 +4,7 @@ import { join, normalize, resolve } from 'path';
 import { SqliteOrmDriver } from "./../src/index";
 import { DI, IContainer } from "@spinajs/di";
 import { SpinaJsDefaultLog, LogModule } from "@spinajs/log";
-import { Orm } from "@spinajs/orm";
+import { Orm, IWhereBuilder } from "@spinajs/orm";
 import * as _ from "lodash";
 import * as chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
@@ -205,6 +205,26 @@ describe("Sqlite queries", () => {
     afterEach(async () => {
         DI.clear();
     });
+
+    it("should select and sort", async () => {
+        await db().Connections.get("sqlite").insert().into("user").values({
+            Name: "a",
+            Password: "test_password",
+            CreatedAt: "2019-10-18"
+        });
+
+        await db().Connections.get("sqlite").insert().into("user").values({
+            Name: "b",
+            Password: "test_password",
+            CreatedAt: "2019-10-18"
+        });
+
+        const userQuery = User.where(function (this: IWhereBuilder) {
+            this.where({ Name: "a" });
+        }).orderBy("Name");
+
+        expect(userQuery).to.be.fulfilled;
+    })
 
     it("should select to model", async () => {
         await db().Connections.get("sqlite").insert().into("user").values({

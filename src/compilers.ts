@@ -1,7 +1,38 @@
 import { SqlColumnQueryCompiler, SqlTableQueryCompiler } from "@spinajs/orm-sql";
-import { ICompilerOutput } from "@spinajs/orm";
+import { ICompilerOutput, OrderByBuilder, OrderByQueryCompiler } from "@spinajs/orm";
 import { NewInstance, Inject, Container } from "@spinajs/di";
 import _ = require("lodash");
+
+@NewInstance()
+export class SqliteOrderByCompiler extends OrderByQueryCompiler {
+
+    protected _builder: OrderByBuilder;
+
+    constructor(builder: OrderByBuilder) {
+        super();
+
+        if (!builder) {
+            throw new Error('builder cannot be null or undefined');
+        }
+
+        this._builder = builder;
+    }
+    public compile(): ICompilerOutput {
+        const sort = this._builder.getSort();
+        let stmt = '';
+        const bindings = [];
+
+        if (sort) {
+            stmt = ` ORDER BY ? ${sort.order.toLowerCase() === "asc" ? "ASC" : "DESC"}`;
+            bindings.push(sort.column);
+        }
+
+        return {
+            bindings,
+            expression: stmt,
+        }
+    }
+}
 
 @NewInstance()
 @Inject(Container)

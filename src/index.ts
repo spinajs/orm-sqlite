@@ -2,11 +2,11 @@ export * from "./compilers";
 export * from "./converters";
 export * from "./decorators";
 
-import { IColumnDescriptor, QueryContext, ColumnQueryCompiler, TableQueryCompiler, OrmDriver, QueryBuilder, TransactionCallback } from "@spinajs/orm";
+import { IColumnDescriptor, QueryContext, ColumnQueryCompiler, TableQueryCompiler, OrmDriver, QueryBuilder, TransactionCallback, OrderByQueryCompiler } from "@spinajs/orm";
 import { Database } from "sqlite3";
 import { SqlDriver } from "@spinajs/orm-sql";
 import { Injectable, Container } from "@spinajs/di";
-import { SqliteColumnCompiler, SqliteTableQueryCompiler } from "./compilers";
+import { SqliteColumnCompiler, SqliteTableQueryCompiler, SqliteOrderByCompiler } from "./compilers";
 
 @Injectable("orm-driver-sqlite")
 export class SqliteOrmDriver extends SqlDriver {
@@ -78,6 +78,8 @@ export class SqliteOrmDriver extends SqlDriver {
                     return;
                 }
 
+
+
                 resolve(this);
             });
         });
@@ -103,6 +105,7 @@ export class SqliteOrmDriver extends SqlDriver {
         this.Container = this.Container.child();
         this.Container.register(SqliteColumnCompiler).as(ColumnQueryCompiler);
         this.Container.register(SqliteTableQueryCompiler).as(TableQueryCompiler);
+        this.Container.register(SqliteOrderByCompiler).as(OrderByQueryCompiler);
     }
 
     public async transaction(qrOrCallback: QueryBuilder[] | TransactionCallback) {
