@@ -149,6 +149,10 @@ describe("Sqlite driver migrate", () => {
         await DI.resolve(Orm);
     });
 
+    afterEach(async () => {
+        DI.clear();
+    });
+
     it("Should migrate create migrate table", async () => {
 
         await db().migrateUp();
