@@ -188,6 +188,46 @@ describe("Sqlite driver migrate", () => {
     })
 });
 
+describe("Sqlite model functions", () =>{
+
+    beforeEach(async () => {
+        DI.register(ConnectionConf).as(Configuration);
+        DI.register(SqliteOrmDriver).as("orm-driver-sqlite");
+        DI.register(SpinaJsDefaultLog).as(LogModule);
+
+        DI.resolve(LogModule);
+        await DI.resolve(Orm);
+
+        await db().migrateUp();
+        await db().reloadTableInfo();
+    });
+
+    afterEach(async () => {
+        DI.clear();
+    });
+
+
+    it("should model create", async ()=>{
+
+        const user = await User.create<User>({
+            Name: "test",
+            Password: "test_password"
+        });
+
+        const result : any = await db().Connections.get("sqlite").select().from("user").first();
+
+        expect(result).to.be.not.null;
+        expect(result.Id).to.eq(1);
+        expect(result.Name).to.eq("test");
+        expect(result.Password).to.eq("test_password");
+
+        expect(user).to.be.not.null;
+        expect(user.Id).to.eq(1);
+        expect(user.Name).to.eq("test");
+        expect(user.Password).to.eq("test_password");
+    })
+});
+
 describe("Sqlite queries", () => {
 
     beforeEach(async () => {
