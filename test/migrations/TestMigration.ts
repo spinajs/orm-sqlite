@@ -11,6 +11,11 @@ export class TestMigration extends OrmMigration
             table.string("Password").notNull();
             table.dateTime("CreatedAt").notNull();
         });
+
+        await connection.schema().createTable("test_model", (table)=>{
+            table.int("Id").primaryKey().autoIncrement();
+            table.dateTime("CreatedAt").notNull();
+        });
         
     }   
     

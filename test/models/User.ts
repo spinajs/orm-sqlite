@@ -15,5 +15,4 @@ export class User extends ModelBase<User>
     @Datetime()
     @CreatedAt()
     public CreatedAt: Date;
-
 }
