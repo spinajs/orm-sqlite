@@ -206,7 +206,6 @@ describe("Sqlite model functions", () =>{
         DI.clear();
     });
 
-
     it("should model create", async ()=>{
 
         const user = await User.create<User>({
