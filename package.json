@@ -1,6 +1,6 @@
 {
   "name": "@spinajs/orm-sqlite",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "SpinaJS orm sqlite support. Contains sqlite driver.",
   "main": "lib/index.js",
   "private": false,
