@@ -67,7 +67,7 @@ describe("Sqlite driver migrate with transaction", () => {
 
         expect((driver.transaction as any).calledOnce).to.be.true;
         expect((driver.execute as any).getCall(3).args[0]).to.eq("BEGIN TRANSACTION");
-        expect((driver.execute as any).getCall(6).args[0]).to.eq("COMMIT");
+        expect((driver.execute as any).getCall(7).args[0]).to.eq("COMMIT");
 
         expect(driver.execute("SELECT * FROM user", null, QueryContext.Select)).to.be.fulfilled;
 
