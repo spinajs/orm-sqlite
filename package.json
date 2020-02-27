@@ -37,7 +37,7 @@
   },
   "homepage": "https://github.com/spinajs/orm-sqlite#readme",
   "dependencies": {
-    "@spinajs/configuration": "^1.0.4",
+    "@spinajs/configuration": "^1.0.5",
     "@spinajs/di": "^1.0.7",
     "@spinajs/log": "^1.0.2",
     "@spinajs/orm": "^1.0.23",
