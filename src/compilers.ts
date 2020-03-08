@@ -48,6 +48,15 @@ export class SqliteTableQueryCompiler extends SqlTableQueryCompiler {
     }
 }
 
+export class SqliteOnDuplicateQueryCompiler extends SqlOnDuplicateQueryCompiler{
+    public compile(): ICompilerOutput {
+        return {
+            expression: `ON CONFLICT(${this._builder.Column}) DO UPDATE SET`,
+            bindings: [] as any
+        }
+    }
+}
+
 @NewInstance()
 export class SqliteColumnCompiler extends SqlColumnQueryCompiler {
     public compile(): ICompilerOutput {
@@ -92,6 +101,7 @@ export class SqliteColumnCompiler extends SqlColumnQueryCompiler {
         if (this.builder.Comment) { _stmt.push(`COMMENT '${this.builder.Comment}'`); }
         if (this.builder.PrimaryKey) { _stmt.push(`PRIMARY KEY`) };
         if (this.builder.AutoIncrement) { _stmt.push(`AUTOINCREMENT`); }
+        if (this.builder.Unique) { _stmt.push("UNIQUE"); }
 
         return {
             bindings: [],
