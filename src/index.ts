@@ -145,13 +145,23 @@ export class SqliteOrmDriver extends SqlDriver {
      */
     public async tableInfo(name: string, _schema?: string): Promise<IColumnDescriptor[]> {
 
-        const result = await this.execute(`PRAGMA table_info(${name});`, null, QueryContext.Select) as [];
+        const tblInfo = await this.execute(`PRAGMA table_info(${name});`, null, QueryContext.Select) as [];
 
-        if (!Array.isArray(result) || result.length === 0) {
+        const indexInfo = await this.execute("select type, name, tbl_name, sql FROM sqlite_master WHERE type='index'", null, QueryContext.Select) as [];
+
+        const re = /\((.*?)\)/;
+        const indices = indexInfo.map((i: any) => {
+            return {
+                table: i.tbl_name,
+                column_name: i.sql.match(re)[0]
+            };
+        });
+
+        if (!Array.isArray(tblInfo) || tblInfo.length === 0) {
             return null;
         }
 
-        return result.map((r: any) => {
+        return tblInfo.map((r: any) => {
             return {
                 Type: r.type,
                 MaxLength: -1,
@@ -164,7 +174,8 @@ export class SqliteOrmDriver extends SqlDriver {
                 AutoIncrement: false,
                 Name: r.name,
                 Converter: null,
-                Schema: _schema ? _schema : this.Options.Database
+                Schema: _schema ? _schema : this.Options.Database,
+                Unique: indices.find(i => i.column_name === r.name && i.table === name) !== undefined
             }
         });
     }

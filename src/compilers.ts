@@ -1,5 +1,5 @@
-import { SqlColumnQueryCompiler, SqlTableQueryCompiler } from "@spinajs/orm-sql";
-import { ICompilerOutput, OrderByBuilder, OrderByQueryCompiler } from "@spinajs/orm";
+import { SqlColumnQueryCompiler, SqlTableQueryCompiler, SqlOnDuplicateQueryCompiler } from "@spinajs/orm-sql";
+import { ICompilerOutput, OrderByBuilder, OrderByQueryCompiler, RawQuery, OnDuplicateQueryBuilder } from "@spinajs/orm";
 import { NewInstance, Inject, Container } from "@spinajs/di";
 import _ = require("lodash");
 
@@ -32,6 +32,38 @@ export class SqliteOrderByCompiler extends OrderByQueryCompiler {
         }
     }
 }
+@NewInstance()
+export class SqliteOnDuplicateQueryCompiler extends SqlOnDuplicateQueryCompiler {
+    protected _builder: OnDuplicateQueryBuilder;
+
+    constructor(builder: OnDuplicateQueryBuilder) {
+       super(builder)
+    }
+
+    public compile() {
+
+        const columns = this._builder.getColumnsToUpdate().map((c: string | RawQuery): string => {
+            if (_.isString(c)) {
+                return `${c} = '?'`;
+            } else {
+                return c.Query;
+            }
+        });
+
+        const bindings = this._builder.getColumnsToUpdate().flatMap((c: string | RawQuery): any => {
+            if (_.isString(c)) {
+                return this._builder.getParent().Values[0];
+            } else {
+                return c.Bindings;
+            }
+        });
+
+        return {
+            bindings,
+            expression: `ON CONFLICT ${this._builder} DO UPDATE SET ${columns}`
+        }
+    }
+}
 
 @NewInstance()
 @Inject(Container)
@@ -47,16 +79,7 @@ export class SqliteTableQueryCompiler extends SqlTableQueryCompiler {
         }
     }
 }
-
-export class SqliteOnDuplicateQueryCompiler extends SqlOnDuplicateQueryCompiler{
-    public compile(): ICompilerOutput {
-        return {
-            expression: `ON CONFLICT(${this._builder.Column}) DO UPDATE SET`,
-            bindings: [] as any
-        }
-    }
-}
-
+ 
 @NewInstance()
 export class SqliteColumnCompiler extends SqlColumnQueryCompiler {
     public compile(): ICompilerOutput {

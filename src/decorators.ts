@@ -24,7 +24,8 @@ export function Datetime() {
             AutoIncrement: false,
             Name: "CreatedAt",
             Converter: new DateTimeConverter(),
-            Schema: "test"
+            Schema: "test",
+            Unique: false
         })
 
     }, true);

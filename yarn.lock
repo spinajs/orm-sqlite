@@ -128,10 +128,10 @@
     glob "^7.1.4"
     lodash "^4.17.14"
 
-"@spinajs/configuration@^1.0.4":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@spinajs/configuration/-/configuration-1.0.4.tgz#f7eab446ad5459c939d2b2489278cffcceb867b7"
-  integrity sha512-jcwrZ6bZHxndUtW13B4qyzbv4f8ri07QA7SOmaDjffP+HEMCYqg6elVyAAWAd1QdCoUxeJK5wRdyYxY0c60RgA==
+"@spinajs/configuration@^1.0.5":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@spinajs/configuration/-/configuration-1.0.5.tgz#e862deecae4ffa29587eee03aac7b6e194f32b2f"
+  integrity sha512-amlkkhtSO1JFR53+U0zWN04F1Fc4UrGWOHxGrspf98WPnh7IXjAwRVJrH1eji88k8+c5/HMnX6rCdyIx/G2+hA==
   dependencies:
     "@spinajs/di" "^1.0.11"
     commander "^2.20.0"
@@ -164,39 +164,38 @@
     chalk "^3.0.0"
     lodash "^4.17.14"
 
-"@spinajs/orm-sql@^1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@spinajs/orm-sql/-/orm-sql-1.0.3.tgz#2180b480df6b8c7edaf335d31c4662a0e651a437"
-  integrity sha512-R3+Ja8EdKFZBk6/jl+wUp9boiHAh5CMjTlCM6oUUT42XUe2QlvOuM2lnDU47hne4pK5fO72ARCPsKybQVNkZcw==
+"@spinajs/orm-sql@^1.0.7":
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/@spinajs/orm-sql/-/orm-sql-1.0.8.tgz#3b94f96c1a2bf6cb62423b4b8d7204dd8a93d01b"
+  integrity sha512-UVmKjV5xo9rq70sEN7dhfHx+xSlQhU/WH5x0G7JfYYTVC3HOb1C3hjVYkB0DbM4oRgsoJiEMJxBZI1HSVPV2XA==
   dependencies:
-    "@spinajs/configuration" "^1.0.0"
+    "@spinajs/configuration" "^1.0.5"
     "@spinajs/di" "^1.0.7"
-    "@spinajs/orm" "^1.0.6"
+    "@spinajs/orm" "^1.0.15"
     typescript-mix "^3.1.3"
 
-"@spinajs/orm@^1.0.10", "@spinajs/orm@^1.0.6":
-  version "1.0.10"
-  resolved "https://registry.yarnpkg.com/@spinajs/orm/-/orm-1.0.10.tgz#ccf4f18165f1c17dc3f9b812887af2c5e033b75c"
-  integrity sha512-KSmVtwF2LUpKZfVNH7ibWvDyZLKsOyNnEcwoueqJiylNttqtzmpIQTPQmrbWD3lc+Dhlz0ZH3A1bd/pvHMHbRg==
+"@spinajs/orm@^1.0.15", "@spinajs/orm@^1.0.23":
+  version "1.0.27"
+  resolved "https://registry.yarnpkg.com/@spinajs/orm/-/orm-1.0.27.tgz#6a51343d5e307cff1015a4ceb999e50dec589522"
+  integrity sha512-fEA/dJU/sc3+h0IcQ6pBM9Yfno+bw1YfTOhZsWs9wnYxJHNoI/8esCspv4I/FVfJdyBUiwBFuPYJYvO1l4LUVQ==
   dependencies:
-    "@spinajs/configuration" "^1.0.0"
+    "@spinajs/configuration" "^1.0.5"
     "@spinajs/di" "^1.0.3"
     "@spinajs/exceptions" "^1.0.0"
     "@spinajs/log" "^1.0.0"
-    "@spinajs/reflection" "^1.0.0"
+    "@spinajs/reflection" "^1.0.4"
     lodash "^4.17.14"
     typescript-mix "^3.1.3"
 
-"@spinajs/reflection@^1.0.0":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@spinajs/reflection/-/reflection-1.0.2.tgz#6bcf9ec8798a5ff547facd1bbc4404c3c6536354"
-  integrity sha512-LbOrgaQ86V1dtZS1vHaxNatcN3NiHgo4JL3/Uf4hj2qQGmDU8frpr7+HeK2NHasxVUo2zfUnnQ08GJcJ86q95w==
+"@spinajs/reflection@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@spinajs/reflection/-/reflection-1.0.4.tgz#dd308494161d654c551f451b95d875d805201862"
+  integrity sha512-vBtk3Di3+jTaD8PP+IMIqOcJmBJk1mBGCMU1eUnDfgoV57fNA+Tug4MYqHQT/l3e8xejGwrJ1ZfdW9tUw5z5kA==
   dependencies:
     "@spinajs/configuration" "^1.0.0"
     "@spinajs/di" "^1.0.3"
     "@spinajs/exceptions" "^1.0.0"
     "@types/mocha" "^5.2.7"
-    lodash "^4.17.14"
 
 "@types/bunyan@^1.8.6":
   version "1.8.6"

@@ -39,6 +39,7 @@
   "dependencies": {
     "@spinajs/configuration": "^1.0.5",
     "@spinajs/di": "^1.0.7",
+    "@spinajs/exceptions": "^1.0.0",
     "@spinajs/log": "^1.0.2",
     "@spinajs/orm": "^1.0.23",
     "@spinajs/orm-sql": "^1.0.7",
