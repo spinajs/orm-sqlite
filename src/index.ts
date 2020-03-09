@@ -2,11 +2,12 @@ export * from "./compilers";
 export * from "./converters";
 export * from "./decorators";
 
-import { IColumnDescriptor, QueryContext, ColumnQueryCompiler, TableQueryCompiler, OrmDriver, QueryBuilder, TransactionCallback, OrderByQueryCompiler } from "@spinajs/orm";
+import { IColumnDescriptor, QueryContext, ColumnQueryCompiler, TableQueryCompiler, OrmDriver, QueryBuilder, TransactionCallback, OrderByQueryCompiler, JoinStatement, OnDuplicateQueryCompiler } from "@spinajs/orm";
 import { Database } from "sqlite3";
 import { SqlDriver } from "@spinajs/orm-sql";
 import { Injectable, Container } from "@spinajs/di";
-import { SqliteColumnCompiler, SqliteTableQueryCompiler, SqliteOrderByCompiler } from "./compilers";
+import { SqliteColumnCompiler, SqliteTableQueryCompiler, SqliteOrderByCompiler, SqliteOnDuplicateQueryCompiler } from "./compilers";
+import { SqlLiteJoinStatement } from "./statements";
 
 @Injectable("orm-driver-sqlite")
 export class SqliteOrmDriver extends SqlDriver {
@@ -106,6 +107,9 @@ export class SqliteOrmDriver extends SqlDriver {
         this.Container.register(SqliteColumnCompiler).as(ColumnQueryCompiler);
         this.Container.register(SqliteTableQueryCompiler).as(TableQueryCompiler);
         this.Container.register(SqliteOrderByCompiler).as(OrderByQueryCompiler);
+        this.Container.register(SqlLiteJoinStatement).as(JoinStatement);
+        this.Container.register(SqliteOnDuplicateQueryCompiler).as(OnDuplicateQueryCompiler);
+
     }
 
     public async transaction(qrOrCallback: QueryBuilder[] | TransactionCallback) {

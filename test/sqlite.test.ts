@@ -296,29 +296,22 @@ describe("Sqlite queries", () => {
         expect(user.CreatedAt).instanceof(Date);
     });
 
-    it("should run on diplicate", async () => {
+    it("should run on duplicate", async () => {
         await db().Connections.get("sqlite").insert().into("user").values({
             Name: "test",
             Password: "test_password",
             CreatedAt: "2019-10-18"
         });
 
+        await User.insert({Id: 1, Name: "test2", Password: "test_password_2", CreatedAt: "2019-10-19"}).onDuplicate("Id").update(["Name", "Password"]);
+
+        const all = await User.all<User>();
         const user = await User.find<User>(1);
 
         expect(user).instanceOf(User);
         expect(user.CreatedAt).instanceof(Date);
-    });
-
-    it("should run join", async () => {
-        await db().Connections.get("sqlite").insert().into("user").values({
-            Name: "test",
-            Password: "test_password",
-            CreatedAt: "2019-10-18"
-        });
-
-        const user = await User.find<User>(1);
-
-        expect(user).instanceOf(User);
-        expect(user.CreatedAt).instanceof(Date);
+        expect(user.Name).to.eq("test2");
+        expect(user.Password).to.eq("test_password_2");
+        expect(all.length).to.eq(1);
     });
 })

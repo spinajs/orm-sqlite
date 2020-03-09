@@ -66,8 +66,8 @@ describe("Sqlite driver migrate with transaction", () => {
         await db().migrateUp();
 
         expect((driver.transaction as any).calledOnce).to.be.true;
-        expect((driver.execute as any).getCall(3).args[0]).to.eq("BEGIN TRANSACTION");
-        expect((driver.execute as any).getCall(7).args[0]).to.eq("COMMIT");
+        expect((driver.execute as any).getCall(4).args[0]).to.eq("BEGIN TRANSACTION");
+        expect((driver.execute as any).getCall(8).args[0]).to.eq("COMMIT");
 
         expect(driver.execute("SELECT * FROM user", null, QueryContext.Select)).to.be.fulfilled;
 
@@ -109,8 +109,8 @@ describe("Sqlite driver migrate with transaction", () => {
         const driver = await DI.resolve<SqliteOrmDriver>("orm-driver-sqlite");
 
         expect((driver.transaction as any).calledOnce).to.be.true;
-        expect((driver.execute as any).getCall(3).args[0]).to.eq("BEGIN TRANSACTION");
-        expect((driver.execute as any).getCall(5).args[0]).to.eq("ROLLBACK");
+        expect((driver.execute as any).getCall(4).args[0]).to.eq("BEGIN TRANSACTION");
+        expect((driver.execute as any).getCall(6).args[0]).to.eq("ROLLBACK");
 
         expect(driver.execute("SELECT * FROM user", null, QueryContext.Select)).to.be.rejected;
         const result = await driver.execute(`SELECT * FROM ${TEST_MIGRATION_TABLE_NAME}`, null, QueryContext.Select);
