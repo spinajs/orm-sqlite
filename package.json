@@ -1,6 +1,6 @@
 {
   "name": "@spinajs/orm-sqlite",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "SpinaJS orm sqlite support. Contains sqlite driver.",
   "main": "lib/index.js",
   "private": false,
@@ -41,8 +41,8 @@
     "@spinajs/di": "^1.0.7",
     "@spinajs/exceptions": "^1.0.0",
     "@spinajs/log": "^1.0.2",
-    "@spinajs/orm": "^1.0.30",
-    "@spinajs/orm-sql": "^1.0.12",
+    "@spinajs/orm": "^1.0.31",
+    "@spinajs/orm-sql": "^1.0.13",
     "lodash": "^4.17.15",
     "sqlite3": "^4.1.1"
   },
