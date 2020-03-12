@@ -61,7 +61,7 @@ export class SqliteOnDuplicateQueryCompiler extends SqlOnDuplicateQueryCompiler 
 
         return {
             bindings,
-            expression: `ON CONFLICT(${this._builder.getColumn()}) DO UPDATE SET ${columns}`
+            expression: `ON CONFLICT(${this._builder.getColumn().join(",")}) DO UPDATE SET ${columns}`
         }
     }
 }
