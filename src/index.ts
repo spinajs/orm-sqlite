@@ -157,7 +157,7 @@ export class SqliteOrmDriver extends SqlDriver {
         const indices = indexInfo.map((i: any) => {
             return {
                 table: i.tbl_name,
-                column_name: i.sql.match(re)[0]
+                column_name: i.sql?.match(re)[0]
             };
         });
 
