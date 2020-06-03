@@ -7,8 +7,8 @@ import { NotSupported } from '@spinajs/exceptions';
 @NewInstance()
 @NewInstance()
 export class SqlLiteJoinStatement extends SqlJoinStatement {
-  constructor(table: string | RawQuery, method: JoinMethod, foreignKey: string, primaryKey: string) {
-    super(table, method, foreignKey, primaryKey);
+  constructor(table: string | RawQuery, method: JoinMethod, foreignKey: string, primaryKey: string, alias: string, tableAlias: string) {
+    super(table, method, foreignKey, primaryKey, alias, tableAlias);
 
     if (
       method === JoinMethod.RIGHT ||
@@ -18,12 +18,5 @@ export class SqlLiteJoinStatement extends SqlJoinStatement {
     ) {
       throw new NotSupported(`join method ${method} is not supported by sqlite driver`);
     }
-  }
-
-  public build(): IQueryStatementResult {
-    return {
-      Bindings: [],
-      Statements: [`\`${this._method}\` ${this._table} ON ${this._primaryKey} = ${this._foreignKey} `],
-    };
   }
 }
