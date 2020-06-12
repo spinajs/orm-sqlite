@@ -1,4 +1,4 @@
-import { SqlColumnQueryCompiler, SqlTableQueryCompiler, SqlOnDuplicateQueryCompiler } from '@spinajs/orm-sql';
+import { SqlColumnQueryCompiler, SqlTableQueryCompiler, SqlOnDuplicateQueryCompiler, SqlInsertQueryCompiler } from '@spinajs/orm-sql';
 import {
   ICompilerOutput,
   OrderByBuilder,
@@ -6,8 +6,9 @@ import {
   RawQuery,
   OnDuplicateQueryBuilder,
   ColumnStatement,
+  InsertQueryBuilder,
 } from '@spinajs/orm';
-import { NewInstance, Inject, Container } from '@spinajs/di';
+import { NewInstance, Inject, Container, Autoinject } from '@spinajs/di';
 import _ = require('lodash');
 
 @NewInstance()
@@ -85,6 +86,33 @@ export class SqliteTableQueryCompiler extends SqlTableQueryCompiler {
       bindings: [],
       expression: `${_table} (${_columns})`,
     };
+  }
+}
+
+@NewInstance()
+export class SqliteInsertQueryCompiler extends SqlInsertQueryCompiler {
+  
+  @Autoinject()
+  protected _container: Container;
+
+  constructor(builder: InsertQueryBuilder) {
+    super(builder);
+  }
+
+  public compile() {
+    const into = this.into();
+    const columns = this.columns();
+    const values = this.values();
+    const onDuplicate = this.onDuplicate();
+
+    return {
+      bindings: values.bindings.concat(onDuplicate.bindings),
+      expression: `${into} ${columns} ${values.data} ${onDuplicate.expression}`.trim(),
+    };
+  }
+
+  protected into() {
+    return `INSERT${this._builder.Ignore ? " OR IGNORE" : ""} INTO \`${this._builder.Table}\``;
   }
 }
 

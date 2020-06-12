@@ -101,6 +101,19 @@ describe("Sqlite driver migration, updates, deletions & inserts", () => {
         expect((result as any).Name).to.eq("test");
     });
 
+    it("should insert or ignore  query", async () => {
+
+        const result = db().Connections.get("sqlite").insert().into("user").values({
+            Name: "test",
+            Password: "test_password",
+            CreatedAt: "2019-10-18"
+        }).ignore().toDB();
+
+         
+        expect(result.expression).to.eq("INSERT OR IGNORE INTO `user` (`Name`,`Password`,`CreatedAt`) VALUES (?,?,?)");
+       
+    });
+
     it("should delete", async () => {
         await db().migrateUp();
         await db().Connections.get("sqlite").insert().into("user").values({

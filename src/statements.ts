@@ -1,5 +1,5 @@
 import { NewInstance } from '@spinajs/di';
-import { IQueryStatementResult, RawQuery } from '@spinajs/orm';
+import { RawQuery } from '@spinajs/orm';
 import { SqlJoinStatement } from '@spinajs/orm-sql';
 import { JoinMethod } from '@spinajs/orm/lib/enums';
 import { NotSupported } from '@spinajs/exceptions';

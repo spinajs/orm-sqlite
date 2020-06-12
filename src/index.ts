@@ -13,6 +13,7 @@ import {
   OrderByQueryCompiler,
   JoinStatement,
   OnDuplicateQueryCompiler,
+  InsertQueryCompiler,
 } from '@spinajs/orm';
 import { Database } from 'sqlite3';
 import { SqlDriver } from '@spinajs/orm-sql';
@@ -22,6 +23,7 @@ import {
   SqliteTableQueryCompiler,
   SqliteOrderByCompiler,
   SqliteOnDuplicateQueryCompiler,
+  SqliteInsertQueryCompiler,
 } from './compilers';
 import { SqlLiteJoinStatement } from './statements';
 
@@ -117,6 +119,7 @@ export class SqliteOrmDriver extends SqlDriver {
     this.Container.register(SqliteOrderByCompiler).as(OrderByQueryCompiler);
     this.Container.register(SqlLiteJoinStatement).as(JoinStatement);
     this.Container.register(SqliteOnDuplicateQueryCompiler).as(OnDuplicateQueryCompiler);
+    this.Container.register(SqliteInsertQueryCompiler).as(InsertQueryCompiler);
   }
 
   public async transaction(qrOrCallback: QueryBuilder[] | TransactionCallback) {
