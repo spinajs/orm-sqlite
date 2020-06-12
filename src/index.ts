@@ -12,7 +12,8 @@ import {
   JoinStatement,
   OnDuplicateQueryCompiler,
   InsertQueryCompiler,
-  DatetimeValueConverter
+  DatetimeValueConverter,
+  SetValueConverter
 } from '@spinajs/orm';
 import { Database } from 'sqlite3';
 import { SqlDriver } from '@spinajs/orm-sql';
@@ -25,7 +26,7 @@ import {
   SqliteInsertQueryCompiler,
 } from './compilers';
 import { SqlLiteJoinStatement } from './statements';
-import { SqliteDatetimeValueConverter } from './converters';
+import { SqliteDatetimeValueConverter, SqliteSetValueConverter } from './converters';
 
 @Injectable('orm-driver-sqlite')
 export class SqliteOrmDriver extends SqlDriver {
@@ -121,6 +122,7 @@ export class SqliteOrmDriver extends SqlDriver {
     this.Container.register(SqliteOnDuplicateQueryCompiler).as(OnDuplicateQueryCompiler);
     this.Container.register(SqliteInsertQueryCompiler).as(InsertQueryCompiler);
     this.Container.register(SqliteDatetimeValueConverter).as(DatetimeValueConverter);
+    this.Container.register(SqliteSetValueConverter).as(SetValueConverter);
   }
 
   public async transaction(qrOrCallback: QueryBuilder[] | TransactionCallback) {
