@@ -1,6 +1,6 @@
-import { IValueConverter } from '@spinajs/orm';
+import { DatetimeValueConverter } from '@spinajs/orm';
 
-export class DateTimeConverter implements IValueConverter {
+export class SqliteDatetimeValueConverter extends DatetimeValueConverter {
   public toDB(value: Date) {
     return value.toISOString();
   }
