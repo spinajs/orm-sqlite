@@ -104,6 +104,7 @@ export class SqliteColumnCompiler extends SqlColumnQueryCompiler {
       case 'date':
       case 'dateTime':
       case 'time':
+      case 'set':
         _stmt.push(`TEXT`);
         break;
       case 'float':

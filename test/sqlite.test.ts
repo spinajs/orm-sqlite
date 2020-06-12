@@ -30,7 +30,7 @@ export class ConnectionConf extends Configuration {
             }
         },
         db: {
-            connections: [
+            Connections: [
                 {
                     Driver: "orm-driver-sqlite",
                     Filename: ":memory:",
