@@ -182,13 +182,13 @@ export class SqliteOrmDriver extends SqlDriver {
         DefaultValue: r.dflt_value,
         NativeType: r.type,
         Unsigned: false,
-        Nullable: r.notnull === 1,
+        Nullable: r.notnull === 0,
         PrimaryKey: r.pk === 1,
         AutoIncrement: false,
         Name: r.name,
         Converter: null,
         Schema: _schema ? _schema : this.Options.Database,
-        Unique: indices.find(i => i.column_name === r.name && i.table === name) !== undefined,
+        Unique: indices.find(i => i.column_name && i.column_name.includes(r.name) && i.table === name) !== undefined,
       };
     });
   }
