@@ -1,5 +1,4 @@
-import { ModelBase, Primary, Connection, Model } from "@spinajs/orm";
-import { Datetime } from "../../src/decorators";
+import { ModelBase, Primary, Connection, Model, CreatedAt } from "@spinajs/orm";
 
 @Connection("sqlite")
 @Model("test_model")
@@ -8,6 +7,6 @@ export class TestModel extends ModelBase<TestModel>
     @Primary()
     public Id: number;
 
-    @Datetime()
+    @CreatedAt()
     public CreatedAt: Date;
 }

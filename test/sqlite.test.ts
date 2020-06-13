@@ -297,6 +297,7 @@ describe("Sqlite queries", () => {
     });
 
     it("should map datetime", async () => {
+        
         await db().Connections.get("sqlite").insert().into("user").values({
             Name: "test",
             Password: "test_password",

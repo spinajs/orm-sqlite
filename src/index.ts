@@ -114,7 +114,6 @@ export class SqliteOrmDriver extends SqlDriver {
   public async resolve(container: Container) {
     super.resolve(container);
 
-    this.Container = this.Container.child();
     this.Container.register(SqliteColumnCompiler).as(ColumnQueryCompiler);
     this.Container.register(SqliteTableQueryCompiler).as(TableQueryCompiler);
     this.Container.register(SqliteOrderByCompiler).as(OrderByQueryCompiler);
@@ -123,6 +122,8 @@ export class SqliteOrmDriver extends SqlDriver {
     this.Container.register(SqliteInsertQueryCompiler).as(InsertQueryCompiler);
     this.Container.register(SqliteDatetimeValueConverter).as(DatetimeValueConverter);
     this.Container.register(SqliteSetValueConverter).as(SetValueConverter);
+
+
   }
 
   public async transaction(qrOrCallback: QueryBuilder[] | TransactionCallback) {
