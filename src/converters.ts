@@ -12,11 +12,20 @@ export class SqliteDatetimeValueConverter extends DatetimeValueConverter {
 
 export class SqliteSetValueConverter extends SetValueConverter {
   public toDB(value: any[]) {
-    return value.join(",");
+    if(value)
+    {
+      return value.join(",");
+    }
+
+    return "";
   }
 
   public fromDB(value: string) {
-    return value.split(",");
+    if(value){
+      return value.split(",");
+    }
+
+    return [];
   }
 }
 
