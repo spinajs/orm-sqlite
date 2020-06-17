@@ -124,6 +124,12 @@ export class SqliteColumnCompiler extends SqlColumnQueryCompiler {
     _stmt.push(`\`${this.builder.Name}\``);
 
     switch (this.builder.Type) {
+      case 'binary':
+      case 'tinyblob':
+      case 'mediumblob':
+      case 'longblob':
+      _stmt.push("BLOB");
+      break;
       case 'string':
       case 'text':
       case 'mediumtext':
