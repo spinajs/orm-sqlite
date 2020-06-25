@@ -188,6 +188,7 @@ export class SqliteOrmDriver extends SqlDriver {
         Unsigned: false,
         Nullable: r.notnull === 0,
         PrimaryKey: r.pk === 1,
+        Uuid: false,
 
         // simply assumpt that integer pkeys are autoincement / auto fill  by default
         AutoIncrement: r.pk === 1 && r.type === "INTEGER",
