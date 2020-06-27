@@ -15,23 +15,5 @@ export class SqliteDatetimeValueConverter extends DatetimeValueConverter {
   }
 }
 
-export class SqliteSetValueConverter extends SetValueConverter {
-  public toDB(value: any[]) {
-    if(value)
-    {
-      return value.join(",");
-    }
-
-    return "";
-  }
-
-  public fromDB(value: string) {
-    if(value){
-      return value.split(",");
-    }
-
-    return [];
-  }
-}
-
+ 
 

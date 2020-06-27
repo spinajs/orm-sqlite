@@ -19,7 +19,9 @@ export class ConnectionConfTransaction extends ConnectionConf {
             }
         },
         db: {
-            MigrateOnStartup: false,
+            Migration:{
+                Startup: false,
+            },
             Connections: [
                 {
                     Driver: "orm-driver-sqlite",
