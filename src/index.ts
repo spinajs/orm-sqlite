@@ -12,7 +12,7 @@ import {
   JoinStatement,
   OnDuplicateQueryCompiler,
   InsertQueryCompiler,
-  DatetimeValueConverter
+  DatetimeValueConverter,
 } from '@spinajs/orm';
 import { Database } from 'sqlite3';
 import { SqlDriver } from '@spinajs/orm-sql';
@@ -120,7 +120,6 @@ export class SqliteOrmDriver extends SqlDriver {
     this.Container.register(SqliteOnDuplicateQueryCompiler).as(OnDuplicateQueryCompiler);
     this.Container.register(SqliteInsertQueryCompiler).as(InsertQueryCompiler);
     this.Container.register(SqliteDatetimeValueConverter).as(DatetimeValueConverter);
-
   }
 
   public async transaction(qrOrCallback: QueryBuilder[] | TransactionCallback) {
@@ -188,7 +187,7 @@ export class SqliteOrmDriver extends SqlDriver {
         Uuid: false,
 
         // simply assumpt that integer pkeys are autoincement / auto fill  by default
-        AutoIncrement: r.pk === 1 && r.type === "INTEGER",
+        AutoIncrement: r.pk === 1 && r.type === 'INTEGER',
         Name: r.name,
         Converter: null,
         Schema: _schema ? _schema : this.Options.Database,

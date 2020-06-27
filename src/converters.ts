@@ -2,8 +2,7 @@ import { DatetimeValueConverter, SetValueConverter } from '@spinajs/orm';
 
 export class SqliteDatetimeValueConverter extends DatetimeValueConverter {
   public toDB(value: Date) {
-    if(value instanceof Date)
-    {
+    if (value instanceof Date) {
       return value.toISOString();
     }
 
@@ -14,6 +13,3 @@ export class SqliteDatetimeValueConverter extends DatetimeValueConverter {
     return new Date(value);
   }
 }
-
- 
-

@@ -1,4 +1,9 @@
-import { SqlColumnQueryCompiler, SqlTableQueryCompiler, SqlOnDuplicateQueryCompiler, SqlInsertQueryCompiler } from '@spinajs/orm-sql';
+import {
+  SqlColumnQueryCompiler,
+  SqlTableQueryCompiler,
+  SqlOnDuplicateQueryCompiler,
+  SqlInsertQueryCompiler,
+} from '@spinajs/orm-sql';
 import {
   ICompilerOutput,
   OrderByBuilder,
@@ -91,7 +96,6 @@ export class SqliteTableQueryCompiler extends SqlTableQueryCompiler {
 
 @NewInstance()
 export class SqliteInsertQueryCompiler extends SqlInsertQueryCompiler {
-  
   @Autoinject()
   protected _container: Container;
 
@@ -112,7 +116,7 @@ export class SqliteInsertQueryCompiler extends SqlInsertQueryCompiler {
   }
 
   protected into() {
-    return `INSERT${this._builder.Ignore ? " OR IGNORE" : ""} INTO \`${this._builder.Table}\``;
+    return `INSERT${this._builder.Ignore ? ' OR IGNORE' : ''} INTO \`${this._builder.Table}\``;
   }
 }
 
@@ -128,8 +132,8 @@ export class SqliteColumnCompiler extends SqlColumnQueryCompiler {
       case 'tinyblob':
       case 'mediumblob':
       case 'longblob':
-      _stmt.push("BLOB");
-      break;
+        _stmt.push('BLOB');
+        break;
       case 'string':
       case 'text':
       case 'mediumtext':

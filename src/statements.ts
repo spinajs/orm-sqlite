@@ -7,7 +7,14 @@ import { NotSupported } from '@spinajs/exceptions';
 @NewInstance()
 @NewInstance()
 export class SqlLiteJoinStatement extends SqlJoinStatement {
-  constructor(table: string | RawQuery, method: JoinMethod, foreignKey: string, primaryKey: string, alias: string, tableAlias: string) {
+  constructor(
+    table: string | RawQuery,
+    method: JoinMethod,
+    foreignKey: string,
+    primaryKey: string,
+    alias: string,
+    tableAlias: string,
+  ) {
     super(table, method, foreignKey, primaryKey, alias, tableAlias);
 
     if (
