@@ -26,6 +26,7 @@ import {
 } from './compilers';
 import { SqlLiteJoinStatement } from './statements';
 import { SqliteDatetimeValueConverter } from './converters';
+import { ResourceDuplicated } from "@spinajs/exceptions";
 
 @Injectable('orm-driver-sqlite')
 export class SqliteOrmDriver extends SqlDriver {
@@ -66,9 +67,13 @@ export class SqliteOrmDriver extends SqlDriver {
           });
           break;
         case QueryContext.Insert:
-          this.Db.run(stmt, ...queryParams, function(err: any) {
+          this.Db.run(stmt, ...queryParams, function (err: any) {
             if (err) {
-              rej(err);
+              if (err.code === 'SQLITE_CONSTRAINT') {
+                rej(new ResourceDuplicated(err))
+              } else {
+                rej(err);
+              }
               return;
             }
 
@@ -157,7 +162,7 @@ export class SqliteOrmDriver extends SqlDriver {
     const tblInfo = (await this.execute(`PRAGMA table_info(${name});`, null, QueryContext.Select)) as [];
 
     const indexInfo = (await this.execute(
-      "select type, name, tbl_name, sql FROM sqlite_master WHERE type='index'",
+      `select type, name, tbl_name, sql FROM sqlite_master WHERE type='index' AND tbl_name='${name}'`,
       null,
       QueryContext.Select,
     )) as [];
@@ -185,6 +190,7 @@ export class SqliteOrmDriver extends SqlDriver {
         Nullable: r.notnull === 0,
         PrimaryKey: r.pk === 1,
         Uuid: false,
+        Ignore: false,
 
         // simply assumpt that integer pkeys are autoincement / auto fill  by default
         AutoIncrement: r.pk === 1 && r.type === 'INTEGER',

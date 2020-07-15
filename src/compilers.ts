@@ -35,7 +35,7 @@ export class SqliteOrderByCompiler extends OrderByQueryCompiler {
     const bindings = [] as any;
 
     if (sort) {
-      stmt = ` ORDER BY ${sort.column} ${sort.order.toLowerCase() === 'asc' ? 'ASC' : 'DESC'}`;
+      stmt = ` ORDER BY \`${sort.column}\` ${sort.order.toLowerCase() === 'asc' ? 'ASC' : 'DESC'}`;
     }
 
     return {
@@ -86,10 +86,11 @@ export class SqliteTableQueryCompiler extends SqlTableQueryCompiler {
   public compile(): ICompilerOutput {
     const _table = this._table();
     const _columns = this._columns();
+    const _foreignKeys = this._foreignKeys();
 
     return {
       bindings: [],
-      expression: `${_table} (${_columns})`,
+      expression: `${_table} (${_columns} ${_foreignKeys ? "," + _foreignKeys : ''})`,
     };
   }
 }
@@ -194,5 +195,23 @@ export class SqliteColumnCompiler extends SqlColumnQueryCompiler {
       bindings: [],
       expression: _stmt.filter(x => !_.isEmpty(x)).join(' '),
     };
+  }
+
+  protected _defaultCompiler(){
+    let _stmt = '';
+
+    if (_.isNil(this.builder.Default) || (_.isString(this.builder.Default) && _.isEmpty(this.builder.Default.trim()))) {
+      return _stmt;
+    }
+
+    if (_.isString(this.builder.Default)) {
+      _stmt = `DEFAULT '${this.builder.Default.trim()}'`;
+    } else if (_.isNumber(this.builder.Default)) {
+      _stmt = `DEFAULT ${this.builder.Default}`;
+    } else if (this.builder.Default instanceof RawQuery) {
+      _stmt = `DEFAULT ${(this.builder.Default as RawQuery).Query}`;
+    }
+
+    return _stmt;
   }
 }

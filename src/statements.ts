@@ -5,7 +5,6 @@ import { JoinMethod } from '@spinajs/orm/lib/enums';
 import { NotSupported } from '@spinajs/exceptions';
 
 @NewInstance()
-@NewInstance()
 export class SqlLiteJoinStatement extends SqlJoinStatement {
   constructor(
     table: string | RawQuery,
@@ -19,9 +18,7 @@ export class SqlLiteJoinStatement extends SqlJoinStatement {
 
     if (
       method === JoinMethod.RIGHT ||
-      method === JoinMethod.RIGHT_OUTER ||
-      method === JoinMethod.INNER ||
-      method === JoinMethod.FULL_OUTER
+      method === JoinMethod.RIGHT_OUTER
     ) {
       throw new NotSupported(`join method ${method} is not supported by sqlite driver`);
     }

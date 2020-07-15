@@ -1,4 +1,4 @@
-import { DatetimeValueConverter, SetValueConverter } from '@spinajs/orm';
+import { DatetimeValueConverter } from '@spinajs/orm';
 
 export class SqliteDatetimeValueConverter extends DatetimeValueConverter {
   public toDB(value: Date) {
@@ -10,6 +10,10 @@ export class SqliteDatetimeValueConverter extends DatetimeValueConverter {
   }
 
   public fromDB(value: string) {
+    if(!value){
+      return null;
+    }
+    
     return new Date(value);
   }
 }
